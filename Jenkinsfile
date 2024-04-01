@@ -1,60 +1,35 @@
 pipeline {
+
     agent any
-
-    environment {
-        // Define environment variables if needed
-    }
-
+    
     stages {
-        stage('Checkout') {
-            steps {
-                git 'https://github.com/codesbyUmair/Lab10'
+         stage('install') {
+          steps {
+              sh 'npm install'
             }
-        }
-
-        stage('Install Dependencies') {
-            steps {
-                script {
-                    // Install frontend dependencies
-                    dir('frontend') {
-                        sh 'npm install'
-                    }
-                    // Install backend dependencies
-                    dir('backend') {
-                        sh 'npm install'
-                    }
-                }
+          }
+          stage('start') {
+          steps {
+              sh 'npm start'
             }
-        }
-
-        stage('Build') {
-            steps {
-                script {
-                    dir('frontend') {
-                        sh 'npm run build'
-                    }
-                }
+          }
+        
+        stage('test') {
+          steps {
+              sh 'npm test'
             }
-        }
-
-        stage('Test') {
-            steps {
-                script {
-                    dir('frontend') {
-                        sh 'npm test'
-                    }
-                }
+          }
+          stage('Docker Image') {
+          steps {
+              sh 'docker build -t SCDLABTASK'
             }
-        }
-
-        stage('Dockerize and Deploy') {
+          }
+        
+        stage('Docker Comopse Up') {
             steps {
-                script {
-                    // Build Docker image
-                    sh 'docker build -t react-app .'
-                    // Run containers using Docker Compose
-                    sh 'docker-compose up -d'
-                }
+               
+                    sh "docker compose up"
+                
             }
         }
     }
