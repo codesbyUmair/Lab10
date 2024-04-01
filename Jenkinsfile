@@ -13,14 +13,14 @@ pipeline {
         stage('Docker Comopse Up') {
             steps {
                
-                    sh "docker compose up"
+                    sh "echo sudo-docker-compose-up"
                 
             }
         }
          stage('kill') {
             steps {
                
-                    sh "docker compose down"
+                    sh "echo sudo-docker-compose-down "
                 
             }
         }
